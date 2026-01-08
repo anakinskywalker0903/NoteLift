@@ -3,6 +3,14 @@
 NoteLift is a Chrome Extension that helps students turn highlighted text from
 web pages and PDFs into clean, module-wise revision notes.
 
+### How NoteLift Works with PDFs
+NoteLift is designed for active study. As you read a PDF or PPT, select and copy
+important text sections and capture them into NoteLift. You can do this multiple
+times across a document or across days.
+
+When you are done studying a module, export all captured notes at once into a
+single file.
+
 ## Features
 - Capture highlighted text from web pages
 - Capture text from PDFs (copy → capture)
