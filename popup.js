@@ -72,3 +72,32 @@ function loadNotes() {
 }
 
 loadNotes();
+exportBtn.addEventListener("click", () => {
+  chrome.storage.local.get(["notesByModule"], (result) => {
+    const notesByModule = result.notesByModule;
+
+    if (!notesByModule || Object.keys(notesByModule).length === 0) {
+      alert("No notes to export.");
+      return;
+    }
+
+    let content = "";
+
+    for (const module in notesByModule) {
+      content += `=== ${module} ===\n\n`;
+
+      notesByModule[module].forEach((note) => {
+        content += note + "\n\n";
+      });
+    }
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+
+    chrome.downloads.download({
+      url: url,
+      filename: "NoteLift_Notes.txt",
+      saveAs: true
+    });
+  });
+});

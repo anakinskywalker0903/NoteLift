@@ -11,7 +11,8 @@
     "activeTab",
     "contextMenus",
     "storage",
-    "clipboardRead"
+    "clipboardRead",
+    "downloads"
   ],
   "background": {
     "service_worker": "background.js"
