@@ -2,83 +2,124 @@
 <html>
   <head>
     <title>NoteLift</title>
-    <style>
+<style>
   body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
       sans-serif;
-    padding: 14px;
+    padding: 0;
     width: 320px;
 
-    /* Background + base text */
-    background: #0b1020;        /* deep blue-black */
-    color: #e6e8ee;             /* soft off-white */
+    /* Deep blue gradient background */
+    background: linear-gradient(
+      180deg,
+      #0b1d3a 0%,
+      #0b1020 60%,
+      #070b16 100%
+    );
+    color: #e6ecff;
+  }
+
+  /* Inner rounded container */
+  .app {
+    border-radius: 16px;
+    padding: 14px;
   }
 
   .header h3 {
-    color: #eef2ff;             /* crisp heading */
-  }
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
 
-  .header p {
-    color: #9aa3b2;             /* muted subtitle */
-  }
+  background: linear-gradient(
+    90deg,
+    #e0e7ff 0%,
+    #93c5fd 40%,
+    #67e8f9 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
+.header p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #aab6d6;
+}
+
+
+  /* Card sections */
   .section {
-    background: #0f172a;        /* card background */
-    border: 1px solid #1e293b;  /* subtle separation */
-    border-radius: 10px;
+    background: linear-gradient(
+      180deg,
+      #102a52 0%,
+      #0f172a 100%
+    );
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 12px;
     padding: 12px;
     margin-bottom: 12px;
   }
 
   input {
     width: 100%;
-    padding: 8px;
+    padding: 9px;
     font-size: 13px;
-    border-radius: 6px;
-
-    background: #020617;        /* darker input */
-    color: #e6e8ee;
+    border-radius: 8px;
+    background: #020617;
+    color: #e6ecff;
     border: 1px solid #334155;
     box-sizing: border-box;
   }
 
   input::placeholder {
-    color: #7c869a;
+    color: #8fa1c7;
   }
 
+  /* Primary CTA */
   button {
     width: 100%;
-    padding: 9px;
+    padding: 10px;
     font-size: 13px;
-    border-radius: 8px;
-
-    background: #1f1b4d;        /* indigo-dark */
-    color: #dbe1ff;
-    border: 1px solid #4338ca;
+    font-weight: 500;
+    border-radius: 10px;
+    border: none;
     cursor: pointer;
     margin-top: 10px;
+
+    background: linear-gradient(
+      90deg,
+      #3b82f6 0%,
+      #22d3ee 100%
+    );
+    color: #020617;
+
+    box-shadow:
+      0 0 0 1px rgba(34, 211, 238, 0.4),
+      0 6px 18px rgba(34, 211, 238, 0.25);
   }
 
   button:hover {
-    background: #2a2566;        /* subtle hover */
+    filter: brightness(1.05);
   }
 
   .hint {
     font-size: 11px;
-    color: #8b94a7;
+    color: #b7c4e3;
     margin-top: 6px;
   }
 
   h4 {
-    color: #eef2ff;
+    margin: 0 0 6px 0;
+    font-size: 13px;
+    font-weight: 600;
+    color: #eef3ff;
   }
 
   .note {
     font-size: 12.5px;
     line-height: 1.45;
-
     background: #020617;
-    color: #e6e8ee;
+    color: #e6ecff;
     border: 1px solid #1e293b;
     border-radius: 8px;
     padding: 8px;
@@ -87,9 +128,11 @@
   }
 
   .empty {
-    color: #8b94a7;
+    font-size: 12px;
+    color: #9fb0d9;
   }
 </style>
+
 
   </head>
 
@@ -107,7 +150,7 @@
       />
       <button id="capturePdfBtn">Capture from Clipboard (PDF)</button>
       <div class="hint">
-        PDFs → Select text → Ctrl+C → Capture
+        For PDFs: Select text, Ctrl+C, then Capture
       </div>
     </div>
 
