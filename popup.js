@@ -1,17 +1,33 @@
 const moduleInput = document.getElementById("moduleInput");
 const notesDiv = document.getElementById("notes");
 const capturePdfBtn = document.getElementById("capturePdfBtn");
+const setModuleBtn = document.getElementById("setModuleBtn");
+const currentModuleText = document.getElementById("currentModuleText");
+const exportBtn = document.getElementById("exportBtn");
+const clearAllBtn = document.getElementById("clearAllBtn");
 
-/* Load current module */
+/* Load current module on startup */
 chrome.storage.local.get(["currentModule"], (result) => {
   if (result.currentModule) {
-    moduleInput.value = result.currentModule;
+    currentModuleText.innerText = `Current Module: ${result.currentModule}`;
+  } else {
+    currentModuleText.innerText = "No module selected";
   }
 });
 
-/* Save module on change */
-moduleInput.addEventListener("input", () => {
-  chrome.storage.local.set({ currentModule: moduleInput.value });
+/* Explicitly set module */
+setModuleBtn.addEventListener("click", () => {
+  const moduleName = moduleInput.value.trim();
+
+  if (!moduleName) {
+    alert("Please enter a module name.");
+    return;
+  }
+
+  chrome.storage.local.set({ currentModule: moduleName }, () => {
+    currentModuleText.innerText = `Current Module: ${moduleName}`;
+    moduleInput.value = "";
+  });
 });
 
 /* Capture PDF selection */
@@ -44,13 +60,16 @@ capturePdfBtn.addEventListener("click", async () => {
   }
 });
 
-
-
 /* Load and display notes */
 function loadNotes() {
   chrome.storage.local.get(["notesByModule"], (result) => {
     const notesByModule = result.notesByModule || {};
     notesDiv.innerHTML = "";
+
+    if (Object.keys(notesByModule).length === 0) {
+      notesDiv.innerText = "No notes saved yet.";
+      return;
+    }
 
     for (const module in notesByModule) {
       const header = document.createElement("h4");
@@ -64,14 +83,12 @@ function loadNotes() {
         notesDiv.appendChild(div);
       });
     }
-
-    if (Object.keys(notesByModule).length === 0) {
-      notesDiv.innerText = "No notes saved yet.";
-    }
   });
 }
 
 loadNotes();
+
+/* Export notes */
 exportBtn.addEventListener("click", () => {
   chrome.storage.local.get(["notesByModule"], (result) => {
     const notesByModule = result.notesByModule;
@@ -99,5 +116,17 @@ exportBtn.addEventListener("click", () => {
       filename: "NoteLift_Notes.txt",
       saveAs: true
     });
+  });
+});
+clearAllBtn.addEventListener("click", () => {
+  const confirmClear = confirm(
+    "This will delete ALL notes and modules. This action cannot be undone.\n\nAre you sure?"
+  );
+
+  if (!confirmClear) return;
+
+  chrome.storage.local.clear(() => {
+    currentModuleText.innerText = "No module selected";
+    notesDiv.innerText = "No notes saved yet.";
   });
 });

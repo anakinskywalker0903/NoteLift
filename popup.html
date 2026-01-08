@@ -144,10 +144,19 @@
 
     <div class="section">
       <input
-        id="moduleInput"
-        type="text"
-        placeholder="Current module (e.g. Module 3)"
-      />
+  id="moduleInput"
+  type="text"
+  placeholder="Enter module name"
+/>
+
+<button id="setModuleBtn" style="margin-top:8px;">
+  Set Module
+</button>
+
+<div class="hint" id="currentModuleText">
+  No module selected
+</div>
+
       <button id="capturePdfBtn">Capture from Clipboard (PDF)</button>
       <div class="hint">
         For PDFs: Select text, Ctrl+C, then Capture
@@ -162,6 +171,10 @@
            Export Notes (.txt)
         </button>
      </div>
+     <button id="clearAllBtn" style="margin-top:8px; background:#3f1d1d; color:#fecaca; border:1px solid #7f1d1d;">
+  Clear All Notes
+</button>
+
 
 
     <script src="popup.js"></script>
