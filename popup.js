@@ -90,33 +90,50 @@ loadNotes();
 
 /* Export notes */
 exportBtn.addEventListener("click", () => {
-  chrome.storage.local.get(["notesByModule"], (result) => {
-    const notesByModule = result.notesByModule;
+  chrome.storage.local.get(
+    ["notesByModule", "currentModule"],
+    (result) => {
+      const notesByModule = result.notesByModule;
 
-    if (!notesByModule || Object.keys(notesByModule).length === 0) {
-      alert("No notes to export.");
-      return;
-    }
+      if (!notesByModule || Object.keys(notesByModule).length === 0) {
+        alert("No notes to export.");
+        return;
+      }
 
-    let content = "";
+      let content = "";
 
-    for (const module in notesByModule) {
-      content += `=== ${module} ===\n\n`;
+      for (const module in notesByModule) {
+        content += `=== ${module} ===\n\n`;
 
-      notesByModule[module].forEach((note) => {
-        content += note + "\n\n";
+        notesByModule[module].forEach((note) => {
+          content += note + "\n\n";
+        });
+      }
+
+      // Decide filename
+      let filename = "NoteLift_Notes.txt";
+
+      if (result.currentModule) {
+        const safeModuleName = result.currentModule
+          .trim()
+          .replace(/\s+/g, "_")
+          .replace(/[^\w\-]/g, "");
+
+        if (safeModuleName.length > 0) {
+          filename = `${safeModuleName}.txt`;
+        }
+      }
+
+      const blob = new Blob([content], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+
+      chrome.downloads.download({
+        url: url,
+        filename: filename,
+        saveAs: true
       });
     }
-
-    const blob = new Blob([content], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-
-    chrome.downloads.download({
-      url: url,
-      filename: "NoteLift_Notes.txt",
-      saveAs: true
-    });
-  });
+  );
 });
 clearAllBtn.addEventListener("click", () => {
   const confirmClear = confirm(
