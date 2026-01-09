@@ -130,7 +130,17 @@
   .empty {
     font-size: 12px;
     color: #9fb0d9;
-  }
+  }.title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
 </style>
 
 
@@ -138,9 +148,12 @@
 
   <body>
     <div class="header">
-      <h3>NoteLift</h3>
-      <p>Turn highlights into revision notes</p>
-    </div>
+  <div class="title-row">
+    <img src="icons/popup-logo.png" alt="NoteLift logo" class="logo" />
+    <h3>NoteLift</h3>
+  </div>
+  <p>Turn highlights into revision notes</p>
+</div>
 
     <div class="section">
       <input
