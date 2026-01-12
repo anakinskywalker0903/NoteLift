@@ -3,8 +3,9 @@ const notesDiv = document.getElementById("notes");
 const capturePdfBtn = document.getElementById("capturePdfBtn");
 const setModuleBtn = document.getElementById("setModuleBtn");
 const currentModuleText = document.getElementById("currentModuleText");
-const exportBtn = document.getElementById("exportBtn");
 const clearAllBtn = document.getElementById("clearAllBtn");
+const exportTxtBtn = document.getElementById("exportTxtBtn");
+const exportMdBtn = document.getElementById("exportMdBtn");
 
 /* Load current module on startup */
 chrome.storage.local.get(["currentModule"], (result) => {
@@ -30,13 +31,13 @@ setModuleBtn.addEventListener("click", () => {
   });
 });
 
-/* Capture PDF selection */
+/* Capture text from clipboard (PDF / highlight) */
 capturePdfBtn.addEventListener("click", async () => {
   try {
     const text = await navigator.clipboard.readText();
 
     if (!text || text.trim() === "") {
-      alert("Clipboard is empty. Copy text from the PDF first.");
+      alert("Clipboard is empty. Copy text first.");
       return;
     }
 
@@ -55,8 +56,8 @@ capturePdfBtn.addEventListener("click", async () => {
         chrome.storage.local.set({ notesByModule }, loadNotes);
       }
     );
-  } catch (err) {
-    alert("Clipboard access failed. Please copy text manually.");
+  } catch {
+    alert("Clipboard access failed.");
   }
 });
 
@@ -88,8 +89,8 @@ function loadNotes() {
 
 loadNotes();
 
-/* Export notes */
-exportBtn.addEventListener("click", () => {
+/* Export notes (TXT or MD) */
+function exportNotes(format) {
   chrome.storage.local.get(
     ["notesByModule", "currentModule"],
     (result) => {
@@ -101,43 +102,65 @@ exportBtn.addEventListener("click", () => {
       }
 
       let content = "";
+      let extension = format === "md" ? ".md" : ".txt";
 
       for (const module in notesByModule) {
-        content += `=== ${module} ===\n\n`;
-
-        notesByModule[module].forEach((note) => {
-          content += note + "\n\n";
-        });
+        if (format === "md") {
+          content += `# ${module}\n\n`;
+          notesByModule[module].forEach((note) => {
+            content += `- ${note}\n`;
+          });
+          content += "\n";
+        } else {
+          content += `=== ${module} ===\n\n`;
+          notesByModule[module].forEach((note) => {
+            content += note + "\n\n";
+          });
+        }
       }
 
-      // Decide filename
-      let filename = "NoteLift_Notes.txt";
+      let filename = "NoteLift_Notes" + extension;
 
       if (result.currentModule) {
-        const safeModuleName = result.currentModule
+        const safeName = result.currentModule
           .trim()
           .replace(/\s+/g, "_")
           .replace(/[^\w\-]/g, "");
 
-        if (safeModuleName.length > 0) {
-          filename = `${safeModuleName}.txt`;
+        if (safeName) {
+          filename = safeName + extension;
         }
       }
 
-      const blob = new Blob([content], { type: "text/plain" });
+      const mimeType =
+  format === "md" ? "text/markdown" : "text/plain";
+
+const blob = new Blob([content], { type: mimeType });
+
       const url = URL.createObjectURL(blob);
 
       chrome.downloads.download({
-        url: url,
-        filename: filename,
+        url,
+        filename,
         saveAs: true
       });
     }
   );
+}
+
+/* Export buttons */
+exportTxtBtn.addEventListener("click", () => {
+  exportNotes("txt");
 });
+
+exportMdBtn.addEventListener("click", () => {
+  exportNotes("md");
+});
+
+/* Clear all notes */
 clearAllBtn.addEventListener("click", () => {
   const confirmClear = confirm(
-    "This will delete ALL notes and modules. This action cannot be undone.\n\nAre you sure?"
+    "This will delete ALL notes and modules.\nThis action cannot be undone.\n\nAre you sure?"
   );
 
   if (!confirmClear) return;
