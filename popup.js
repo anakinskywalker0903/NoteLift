@@ -1,6 +1,5 @@
 const moduleInput = document.getElementById("moduleInput");
 const notesDiv = document.getElementById("notes");
-const capturePdfBtn = document.getElementById("capturePdfBtn");
 const setModuleBtn = document.getElementById("setModuleBtn");
 const currentModuleText = document.getElementById("currentModuleText");
 const clearAllBtn = document.getElementById("clearAllBtn");
@@ -30,34 +29,11 @@ setModuleBtn.addEventListener("click", () => {
     moduleInput.value = "";
   });
 });
-
-/* Capture text from clipboard (PDF / highlight) */
-capturePdfBtn.addEventListener("click", async () => {
-  try {
-    const text = await navigator.clipboard.readText();
-
-    if (!text || text.trim() === "") {
-      alert("Clipboard is empty. Copy text first.");
-      return;
-    }
-
-    chrome.storage.local.get(
-      ["notesByModule", "currentModule"],
-      (result) => {
-        const module = result.currentModule || "Uncategorized";
-        const notesByModule = result.notesByModule || {};
-
-        if (!notesByModule[module]) {
-          notesByModule[module] = [];
-        }
-
-        notesByModule[module].push(text);
-
-        chrome.storage.local.set({ notesByModule }, loadNotes);
-      }
-    );
-  } catch {
-    alert("Clipboard access failed.");
+// Allow Enter key to set module
+moduleInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault(); // prevents form-like behavior
+    setModuleBtn.click();   // reuse existing logic
   }
 });
 

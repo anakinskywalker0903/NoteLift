@@ -65,6 +65,11 @@ NoteLift is currently in active dogfooding and testing. The core workflow is sta
 Feedback, bug reports, and workflow suggestions are welcome.
 If you try NoteLift and notice anything confusing or improvable, feel free to open an issue or share feedback through this repository.
 
+## Future Scope
+
+- Optional OCR support for image-based or scanned PDFs may be explored in a future version.
+- Any such feature would be designed carefully with privacy, performance, and user control in mind.
+
 ## License
 
 This project is licensed under the MIT License.
