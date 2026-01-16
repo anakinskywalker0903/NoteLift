@@ -1,75 +1,93 @@
 # NoteLift
 
-NoteLift is a lightweight, local-first Chrome extension that helps students convert highlighted text from PDFs and web pages into clean, module-wise revision notes.
+NoteLift is a local-first Chrome extension that helps students convert highlighted text from PDFs and web pages into clean, module-wise revision notes — without accounts, cloud sync, or AI interference.
+
+👉 Live on the Chrome Web Store: https://chrome.google.com/webstore/detail/appchfdfnjlebnpabaocabfjconhemjp
 
 ## Why NoteLift?
 
-While studying from PDFs or online material, important points are often scattered across pages. NoteLift was built to solve a simple problem: capturing only what _you_ find important and organizing it into structured, module-wise notes for easy revision.
-The extension is intentionally minimal, privacy-friendly, and works entirely offline without any cloud services or accounts.
+When studying from PDFs or online material, important points are scattered across pages and sources. Existing tools often force logins, cloud sync, or AI-driven summaries that dilute user intent.
+
+NoteLift was built to solve a simpler, more deliberate problem:
+
+Capture only what you choose, organize it your way, and keep it entirely local.
 
 ## Design Principles
 
-- **Local-first:** All notes are stored locally in the browser.
-- **No AI by default:** Notes reflect the user’s judgment, not automated summaries.
-- **Minimal workflow:** Capture → Review → Export.
-- **Privacy-friendly:** No login, no tracking, no external APIs.
+* Local-first — all notes stay in the browser
+* No AI by default — preserves user judgment
+* Explicit organization — module names are user-defined
+* Minimal workflow — Highlight → Save → Export
+* Privacy-first — no login, no tracking, no analytics
 
 ## Features
 
-- Capture highlighted text from PDFs and web pages
-- Organize notes explicitly by module or chapter
-- Store all notes locally using Chrome storage
-- Review saved notes directly inside the extension
-- Export notes as a single file per module
-- Supports export in **TXT** and **Markdown (MD)** formats
-- Clear all notes safely with confirmation
+* Save highlighted text from PDFs and web pages via right-click
+* Organize notes explicitly by module or chapter
+* Review saved notes directly inside the extension popup
+* Export notes module-wise, named after the module
+* Supports TXT and Markdown (MD) exports
+* Clear all notes safely with confirmation
+* Works fully offline using browser storage
 
 ## How It Works
 
-1. Set the current module name inside the extension.
-2. While studying, highlight important text in a PDF or web page.
-3. Save the highlighted text to NoteLift (via context menu or clipboard capture).
-4. Notes are grouped automatically under the selected module.
-5. Review notes anytime inside the popup.
-6. Export notes as TXT or Markdown when revision is needed.
+1. Set a module name inside the extension
+2. Highlight important text while studying
+3. Right-click → Save to NoteLift
+4. Notes are grouped under the active module
+5. Review notes anytime from the toolbar
+6. Export notes when revision is needed
 
 ## Export Formats
 
-NoteLift supports two export formats:
+* TXT — simple plain-text revision files
+* Markdown (MD) — structured notes compatible with Obsidian, Notion, and GitHub
 
-- **TXT:** Plain text format for simple revision and sharing.
-- **Markdown (MD):** Structured format suitable for tools like Obsidian, Notion, or GitHub-based notes.
-  Both formats export notes module-wise and name the file after the selected module.
+Each export produces a single file per module, named automatically.
 
-## Limitations
+## Limitations (By Design)
 
-- NoteLift captures only user-selected text.
-- Diagrams, formulas rendered as images, and scanned PDFs cannot be extracted automatically.
-- The extension does not summarize or modify notes — it preserves exactly what the user saves.
-  These limitations are intentional to keep the workflow simple, transparent, and reliable.
+* Only user-selected text is captured
+* Scanned PDFs / image-only content are not supported yet
+* No automatic summarization or rewriting
 
-## Installation (Developer Mode)
+These constraints are intentional to keep the workflow transparent, fast, and predictable.
 
-1. Clone or download this repository.
-2. Open Chrome and go to `chrome://extensions`.
-3. Enable **Developer mode**.
-4. Click **Load unpacked** and select the project folder.
-5. The NoteLift extension will appear in the toolbar.
+## OCR & Future Scope
 
-## Project Status
+OCR support for scanned or image-based PDFs is being explored as a future feature.
 
-NoteLift is currently in active dogfooding and testing. The core workflow is stable and usable, and feedback is being collected before publishing to the Chrome Web Store.
+If implemented, it will:
+* Be optional
+* Run on-device or user-controlled
+* Avoid forced cloud dependency
 
-## Feedback
+No OCR or external AI services are used in the current version.
 
-Feedback, bug reports, and workflow suggestions are welcome.
-If you try NoteLift and notice anything confusing or improvable, feel free to open an issue or share feedback through this repository.
+## Security & Trust Notice
 
-## Future Scope
+Newly published Chrome extensions may display:
 
-- Optional OCR support for image-based or scanned PDFs may be explored in a future version.
-- Any such feature would be designed carefully with privacy, performance, and user control in mind.
+"Not trusted by Enhanced Safe Browsing"
+
+This is normal for new extensions and typically resolves over time as usage and reputation build. NoteLift does not execute remote code, collect personal data, or communicate with external servers.
+
+## Name Clarification
+
+NoteLift (this extension) is not affiliated with the website `notelift.com`. The Chrome extension operates independently and focuses on local note organization.
+
+## Tech Stack
+
+* JavaScript (Manifest V3)
+* Chrome Extensions API
+* Local storage (`chrome.storage`)
+* Context menus & downloads API
 
 ## License
 
-This project is licensed under the MIT License.
+MIT License
+
+## Feedback
+
+Ideas, issues, and workflow feedback are welcome. This project was built from first principles and continues to evolve based on real study use.
